@@ -2,6 +2,7 @@ import {expect, use} from 'chai';
 import {Contract} from 'ethers';
 import {deployContract, MockProvider, solidity} from 'ethereum-waffle';
 import MyToken from '../build/MyToken.json';
+import TokenSplitter from '../build/TokenSplitter.json';
 
 use(solidity);
 
@@ -21,10 +22,21 @@ describe.only('MyToken', () => {
     await token.transfer(walletTo.address, 7);
     expect(await token.balanceOf(walletTo.address)).to.equal(7);
   });
+  
+  it('Transfer to self', async () => {
+    await token.transfer(wallet.address, 7);
+    expect(await token.balanceOf(wallet.address)).to.equal(1000);
+  });
+
+  it('Transfer zero-amount', async () => {
+    await token.transfer(walletTo.address, 0);
+    expect(await token.balanceOf(wallet.address)).to.equal(1000);
+    expect(await token.balanceOf(walletTo.address)).to.equal(0);
+  });
 
   it('Transfer emits event', async () => {
     await expect(token.transfer(walletTo.address, 7))
-      .to.emit(token, 'Transfer')
+      .to.emit(token, 'Transferred')
       .withArgs(wallet.address, walletTo.address, 7);
   });
 
@@ -38,4 +50,33 @@ describe.only('MyToken', () => {
       .to.be.reverted;
   });
 
+  it('Assigns allowance', async () => {
+    await expect(token.approve(walletTo.address, 20)).to.not.be.reverted;
+    expect(await token.allowance(wallet.address, walletTo.address)).to.eq(20)
+  });
+
+  it('Performs transferFrom when allowed', async () => {
+    const tokenFromOtherWallet = token.connect(walletTo);
+    await token.approve(walletTo.address, 20);
+    await expect(tokenFromOtherWallet.transferFrom(wallet.address, walletTo.address, 10)).to.not.be.reverted;
+    expect(await token.balanceOf(walletTo.address)).to.eq(10);
+  });
+
+  it('Fails transferFrom when NOT allowed', async () => {
+    const tokenFromOtherWallet = token.connect(walletTo);
+    await expect(tokenFromOtherWallet.transferFrom(wallet.address, walletTo.address, 10)).to.be.reverted;
+  });
+
+  it('Fails transferFrom when allowed too small amount', async () => {
+    const tokenFromOtherWallet = token.connect(walletTo);
+    await token.approve(walletTo.address, 20);
+    await expect(tokenFromOtherWallet.transferFrom(wallet.address, walletTo.address, 50)).to.be.reverted;
+  });
+
+  it('Deducts correct amount from allowance', async () => {
+    const tokenFromOtherWallet = token.connect(walletTo);
+    await token.approve(walletTo.address, 20);
+    await expect(tokenFromOtherWallet.transferFrom(wallet.address, walletTo.address, 10)).to.not.be.reverted;
+    expect(await token.allowance(wallet.address, walletTo.address)).to.eq(10);
+  });
 });
