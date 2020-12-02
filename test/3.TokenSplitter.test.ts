@@ -6,7 +6,7 @@ import TokenSplitter from '../build/TokenSplitter.json';
 
 use(solidity);
 
-describe.only('MyToken', () => {
+describe('MyToken', () => {
     const [wallet, first, second] = new MockProvider().getWallets();
     let token: Contract;
     let splitter: Contract;
@@ -19,7 +19,7 @@ describe.only('MyToken', () => {
     describe('When approved', () => {
         it('Splits an even value', async => {
             //
-            await token.approve(splitter.address, 100);
+            //await token.approve(splitter.address, 100);
         })
     })
 });  

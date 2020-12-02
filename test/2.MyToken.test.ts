@@ -6,7 +6,7 @@ import TokenSplitter from '../build/TokenSplitter.json';
 
 use(solidity);
 
-describe.only('MyToken', () => {
+describe('MyToken', () => {
   const [wallet, walletTo] = new MockProvider().getWallets();
   let token: Contract;
 
