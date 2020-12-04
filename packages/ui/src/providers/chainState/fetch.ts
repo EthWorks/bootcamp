@@ -20,10 +20,14 @@ export async function fetchChainState(
   return {
     user: {
       ethBalance: result[0],
-      januszBalance: result[1],
-      grazynaBalance: result[2],
-      januszApproval: result[3],
-      grazynaApproval: result[4],
+      balances: {
+        [Janusz.address]: result[1],
+        [Grazyna.address]: result[2],
+      },
+      approvals: {
+        [Janusz.address]: result[3],
+        [Grazyna.address]: result[4],
+      },
     },
     shared: {},
   }

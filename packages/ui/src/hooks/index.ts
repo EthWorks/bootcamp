@@ -1,6 +1,7 @@
 export * from './useTransactions'
 export * from './useDebounce'
 export * from './useEthBalance'
+export * from './useTokenBalance'
 export * from './useEthers'
 export * from './useNumberInput'
 export * from './useLocalStorage'

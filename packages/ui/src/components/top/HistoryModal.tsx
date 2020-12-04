@@ -28,6 +28,7 @@ export function HistoryModal({ onClose }: Props) {
   )
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getEtherscanLink(transaction: StoredTransaction, chainId: ChainId) {
   return ''
 }

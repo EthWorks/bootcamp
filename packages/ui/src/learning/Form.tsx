@@ -1,5 +1,37 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useNumberInput, useTokenBalance } from '../hooks'
+import { Janusz, Grazyna } from '../constants'
+
+export function Form() {
+  const januszBalance = useTokenBalance(Janusz)
+  const grazynaBalance = useTokenBalance(Grazyna)
+
+  const [token1Value, setToken1Value] = useNumberInput(Janusz.decimals)
+  const [token2Value, setToken2Value] = useNumberInput(Grazyna.decimals)
+
+  return (
+    <Wrapper>
+      <InputsArea>
+        <TokenInputGroup>
+          <InputLabel htmlFor="token-1">{Janusz.name}</InputLabel>
+          <TokenBalance>{januszBalance?.formatWithSymbol()}</TokenBalance>
+          <Input value={token1Value} onChange={(e) => setToken1Value(e.target.value)} id="token-1" type="text" />
+        </TokenInputGroup>
+        <TokenInputGroup>
+          <InputLabel htmlFor="token-2">{Grazyna.name}</InputLabel>
+          <TokenBalance>{grazynaBalance?.formatWithSymbol()}</TokenBalance>
+          <Input value={token2Value} onChange={(e) => setToken2Value(e.target.value)} id="token-2" type="text" />
+        </TokenInputGroup>
+      </InputsArea>
+      <ButtonsArea>
+        <ApproveButton>approve token 1</ApproveButton>
+        <ApproveButton>approve token 2</ApproveButton>
+        <AddLiquidityButton>add liquidity</AddLiquidityButton>
+      </ButtonsArea>
+    </Wrapper>
+  )
+}
 
 const Wrapper = styled.div`
   height: 100%;
@@ -44,27 +76,3 @@ const ApproveButton = styled.button``
 const AddLiquidityButton = styled.button`
   grid-column: span 2;
 `
-
-export function Form() {
-  return (
-    <Wrapper>
-      <InputsArea>
-        <TokenInputGroup>
-          <InputLabel htmlFor="token-1">token 1</InputLabel>
-          <TokenBalance>token 1 balance</TokenBalance>
-          <Input id="token-1" type="text" />
-        </TokenInputGroup>
-        <TokenInputGroup>
-          <InputLabel htmlFor="token-2">token 2</InputLabel>
-          <TokenBalance>token 2 balance</TokenBalance>
-          <Input id="token-2" type="text" />
-        </TokenInputGroup>
-      </InputsArea>
-      <ButtonsArea>
-        <ApproveButton>approve token 1</ApproveButton>
-        <ApproveButton>approve token 2</ApproveButton>
-        <AddLiquidityButton>add liquidity</AddLiquidityButton>
-      </ButtonsArea>
-    </Wrapper>
-  )
-}

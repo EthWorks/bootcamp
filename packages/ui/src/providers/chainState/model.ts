@@ -7,10 +7,13 @@ export interface ChainState {
 
 export interface UserState {
   ethBalance: BigNumber
-  januszBalance: BigNumber
-  grazynaBalance: BigNumber
-  januszApproval: BigNumber
-  grazynaApproval: BigNumber
+  balances: {
+    [token: string]: BigNumber | undefined
+  }
+  approvals: {
+    [token: string]: BigNumber | undefined
+  }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface SharedState {}
