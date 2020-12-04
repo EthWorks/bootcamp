@@ -48,6 +48,6 @@ function Employee(props: EmployeeProps) {
   )
 }
 
-function Redacted(props: { key: number }) {
+function Redacted() {
   return <li>Redacted</li>
 }
