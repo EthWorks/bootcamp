@@ -21,6 +21,7 @@
     "start": "ts-node local"
   },
   "devDependencies": {
+    "@openzeppelin/contracts": "^3.3.0",
     "@typechain/ethers-v5": "^4.0.0",
     "@types/chai": "^4.2.14",
     "@types/mocha": "^8.0.3",
