@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Page, PageContent, Title } from '../components'
+import { Form } from '../../learning/Form'
 import { Colors } from '../constants'
 import { SendForm } from './SendForm'
 
@@ -11,7 +12,7 @@ export function Home() {
         <Title>Welcome to Ethworks DApp</Title>
         <p>Use the form below to send DAI</p>
         <Separator />
-        <SendForm />
+        <Form />
         <Separator />
         <p>This boilerplate includes several neat things:</p>
         <ol>
