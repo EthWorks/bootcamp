@@ -42,3 +42,9 @@ export const totalSupply = (token: string): MulticallRequest => ({
   data: erc20Interface.encodeFunctionData('totalSupply'),
   decode: (result: string) => BigNumber.from(result),
 })
+
+export const allowance = (tokenAddress: string, owner: string, spender: string): MulticallRequest => ({
+  address: tokenAddress,
+  data: erc20Interface.encodeFunctionData('allowance', [owner, spender]),
+  decode: (result: string) => BigNumber.from(result),
+})

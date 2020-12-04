@@ -7,9 +7,10 @@ export interface ChainState {
 
 export interface UserState {
   ethBalance: BigNumber
-  daiBalance: BigNumber
+  januszBalance: BigNumber
+  grazynaBalance: BigNumber
+  januszApproval: BigNumber
+  grazynaApproval: BigNumber
 }
 
-export interface SharedState {
-  daiTotalSupply: BigNumber
-}
+export interface SharedState {}

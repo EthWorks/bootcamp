@@ -8,4 +8,3 @@ export const Grazyna = new Token(ChainId.Ganache, '0x345cA3e014Aaf5dcA488057592e
 export const NATIVE_CURRENCY = {
   [ChainId.Ganache]: GanacheEther,
 }
-

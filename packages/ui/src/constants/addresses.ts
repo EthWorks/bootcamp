@@ -5,5 +5,5 @@ export const MULTICALL_ADDRESS = {
 }
 
 export const DEX_ADDRESS = {
-  [ChainId.Ganache]: '0xf25186B5081Ff5cE73482AD761DB0eB0d25abfBF'
+  [ChainId.Ganache]: '0xf25186B5081Ff5cE73482AD761DB0eB0d25abfBF',
 }
