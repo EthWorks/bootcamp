@@ -4,7 +4,7 @@ import { CurrencyValue } from '../model'
 import { ChainId, NATIVE_CURRENCY } from '../constants'
 
 export function useEthBalance() {
-  const { chainId = ChainId.Mainnet } = useEthers()
+  const { chainId = ChainId.Ganache } = useEthers()
   const chainState = useChainState()
 
   const value = chainState?.state?.user?.ethBalance

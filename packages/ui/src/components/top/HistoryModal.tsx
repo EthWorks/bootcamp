@@ -29,16 +29,11 @@ export function HistoryModal({ onClose }: Props) {
 }
 
 function getEtherscanLink(transaction: StoredTransaction, chainId: ChainId) {
-  switch (chainId) {
-    case ChainId.Mainnet:
-      return `https://etherscan.io/tx/${transaction.hash}`
-    case ChainId.Kovan:
-      return `https://kovan.etherscan.io/tx/${transaction.hash}`
-  }
+  return ''
 }
 
 function TransactionItem({ tx }: { tx: StoredTransaction }) {
-  const { chainId = ChainId.Mainnet } = useEthers()
+  const { chainId = ChainId.Ganache } = useEthers()
   return (
     <ListItem>
       {!tx.receipt && <Spinner />}{' '}
