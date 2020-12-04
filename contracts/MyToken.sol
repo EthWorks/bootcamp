@@ -1,18 +1,21 @@
+/* SPDX-License-Identifier: MIT */
 pragma solidity ^0.6.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
 contract MyToken is IERC20 {
-    using SafeMath for uint256;
+    using SafeMath for uint;
 
+    uint supply;
+    mapping(address => mapping(address => uint)) approvals; // owner => spender => value
     mapping(address => uint) balances;
-    mapping(address => mapping(address => uint)) approvals;
-    uint256 supply;
+
+    event Transfer(address walletFrom, address waletTo, uint amount);
 
     constructor(uint _initialBalance) public {
-        balances[msg.sender] = _initialBalance;
         supply = _initialBalance;
+        balances[msg.sender] = _initialBalance;
     }
 
     function totalSupply() external view override returns (uint256) {
@@ -23,33 +26,34 @@ contract MyToken is IERC20 {
         return balances[account];
     }
 
+
     function transfer(address recipient, uint256 amount) external override returns (bool) {
-        return transferInternal(msg.sender, recipient, amount);
+        require(recipient != msg.sender, 'Cannot transfer to himself');
+        require(amount != 0, 'Cannot transfer 0');
+        require(balances[msg.sender] >= amount, 'Insufficient funds');
+        balances[msg.sender] = balances[msg.sender].sub(amount);
+        balances[recipient] = balances[recipient].add(amount);
+        emit Transfer(msg.sender, recipient, amount);
+        return true;
     }
-    event Transferred(address sender, address recipient, uint256 amount);
 
     function allowance(address owner, address spender) external override view returns (uint256) {
         return approvals[owner][spender];
     }
 
     function approve(address spender, uint256 amount) external override returns (bool) {
-        require(msg.sender != spender);
+        require(amount <= balances[msg.sender], 'Insufficient funds');
         approvals[msg.sender][spender] = amount;
         return true;
     }
 
     function transferFrom(address sender, address recipient, uint256 amount) external override returns (bool) {
-        require(approvals[sender][msg.sender] >= amount, "Not allowed to transfer this amount");
-        transferInternal(sender, recipient, amount);
-        approvals[sender][msg.sender] = approvals[sender][msg.sender].sub(amount);
+        require(approvals[sender][msg.sender] >= amount, 'Unsufficient allowance');
+        require(balances[sender] >= amount, 'Unsufficient funds on sender');
+        approvals[sender][recipient] = approvals[sender][recipient].sub(amount);
+        balances[sender] = balances[sender].sub(amount);
+        balances[recipient] = balances[recipient].add(amount);
         return true;
     }
 
-    function transferInternal(address from, address to, uint256 amount) private returns (bool) {
-        require(balances[from] >= amount, "Insufficient funds");
-        balances[from] = balances[from].sub(amount);
-        balances[to]   = balances[to].add(amount);
-        emit Transferred(from, to, amount);
-        return true;
-    }
 }
